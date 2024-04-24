@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Menu</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="menu">
+        <h1>Subterfuge</h1>
+        <div class="join-form">
+            <input type="text" id="nickname-input" placeholder="Enter Your Nickname">
+            <input type="text" id="game-code-input" placeholder="Enter Game Code">
+            <button id="join-game-btn">Join Game</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const joinGameBtn = document.getElementById("join-game-btn");
+
+            // Function to generate a unique lobby code
+            function generateUniqueGameCode() {
+                const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                let code = "";
+                do {
+                    code = "";
+                    for (let i = 0; i < 6; i++) {
+                        code += characters.charAt(Math.floor(Math.random() * characters.length));
+                    }
+                } while (document.getElementById("game-code-input").value === code);
+                return code;
+            }
+
+            // Function to handle backend request and generate lobby code
+            function handleGenerateCodeRequest() {
+                const gameCode = generateUniqueGameCode();
+                // Send the generated lobby code back to the backend
+                fetch("https://our-backend-url.com/generate-code", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ gameCode })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    console.log("Lobby code generated:", gameCode); // Log the generated code
+                })
+                .catch(error => {
+                    console.error("There was a problem with the fetch operation:", error);
+                    // Handle errors, display error message to the user, etc.
+                });
+            }
+
+            // Listen for backend request to generate lobby code
+            window.addEventListener("message", function(event) {
+                if (event.origin === "https://our-backend-url.com") {
+                    if (event.data === "generateGameCode") {
+                        handleGenerateCodeRequest();
+                    }
+                }
+            });
+
+            // Click event listener for Join Game button
+            joinGameBtn.addEventListener("click", function() {
+                const nickname = document.getElementById("nickname-input").value;
+                const gameCode = document.getElementById("game-code-input").value;
+
+                // Send a POST request to the Unity backend to join the game with the provided nickname and game code
+                fetch("https://our-backend-url.com/join-game", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ nickname, gameCode }) // Include nickname in the request body
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Handle the response from the backend
+                    console.log("Joined game successfully");
+                    // Redirect the user to the game lobby where the host is located,,, THIS IS CHANGING TO GETTING SENT TO THE NEXT MENU IN WEBSITE
+                    window.location.href = "https://our-game-lobby-url.com";
+                })
+                .catch(error => {
+                    console.error("There was a problem with the fetch operation:", error);
+                    // Handle errors, display error message to the user, etc.
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+/* Main Menu styles */
+.menu {
+    width: 100%;
+    height: 100vh;
+    text-align: center;
+    background: url('background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu h1 {
+    margin: 0 0 20px; /* Move title up and add spacing at bottom */
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 5vw; /* Increase font size */
+}
+
+.join-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px; /* Increase margin between title and form */
+}
+
+.join-form input {
+    width: 80%;
+    max-width: 300px; /* Limit input width for smaller screens */
+    padding: 15px;
+    margin-bottom: 20px; /* Add margin between input fields */
+    border: none;
+    border-radius: 10px;
+    font-size: 1.5vw; /* Increase font size */
+}
+
+button {
+    min-width: 150px;
+    padding: 15px;
+    background-color: #607d8b;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 2.5vw; /* Increase font size */
+    text-transform: uppercase;
+}
+
+button:hover {
+    background-color: #78909c;
+}
+
+button:focus {
+    outline: none;
+}
+
+#start-game-btn {
+    background-color: #807776;
+    color: #000;
+}
+
+#join-game-btn {
+    background-color: #807776;
+    color: #000;
+}
+
+#how-to-play-btn,
+#about-btn,
+#settings-btn {
+    background-color: #807776;
+    color: #000;
+}
